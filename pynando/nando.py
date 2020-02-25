@@ -2,6 +2,8 @@ from collections import OrderedDict
 import json
 from pathlib import Path
 
+from pynando.data import find
+
 
 class NandoNode(object):
     def __init__(
@@ -77,7 +79,7 @@ class NandoNode(object):
 
 
 class Nando(object):
-    def __init__(self, file_path):
+    def __init__(self, resource_name: str):
         self.root = NandoNode(
             _id='0',
             name_ja='root',
@@ -91,7 +93,8 @@ class Nando(object):
             notification_no=None,
         )
         self.nando_node_dict = {'0': self.root}
-        self.read(file_path)
+        self.fp = find(resource_name)
+        self.read(self.fp)
 
     def __len__(self):
         return len(self.nando_node_dict)

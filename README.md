@@ -3,16 +3,13 @@
 wrapper for Nando (Nanbyo data ontology)
 
 ```
-from pynando.data import find
 from pynando.nando import Nando
 
 # get nanbyo (指定難病)
-fp_nanbyo = find('nanbyo')
-nanbyo = Nando(fp_nanbyo)
+nanbyo = Nando('nanbyo)
 
 # get shoman (小児特定慢性疾病)
-fp_shoman = find('shoman')
-shoman = Nando(fp_shoman)
+shoman = Nando('shoman')
 ```
 
 You can access each nando_node by id
