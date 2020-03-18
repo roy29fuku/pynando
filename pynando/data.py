@@ -8,7 +8,7 @@ path = Path('/usr/local/share/pynando/')
 
 def find(resource_name):
     resource_name = resource_name.lower()
-    assert resource_name in ['shoman', 'nanbyo']
+    assert resource_name in ['shoman', 'nanbyo', 'shoman_class', 'nanbyo_class']
 
     fp = path / '{}.json'.format(resource_name)
     if not fp.exists():
