@@ -1,4 +1,5 @@
-from git import Repo
+import requests
+from pathlib import Path
 
 import pynando.data
 
@@ -8,15 +9,26 @@ def default_download_dir():
 
 
 class Downloader(object):
-    def __init__(self, download_dir=None):
+    def __init__(self, download_dir: Path=None):
         self._download_dir = download_dir
         if self._download_dir is None:
             self._download_dir = default_download_dir()
+        if not self._download_dir.exists():
+            self._download_dir.mkdir()
 
     def download(self):
         print('download nando data')
-        print('data are private currently')
-        name = input('Username for https://github.com: ')
-        url = 'https://{}@github.com/precemia/nando_originalData.git'.format(name)
-        Repo.clone_from(url, self._download_dir)
-        return
+        url_list = [
+            'https://raw.githubusercontent.com/aidrd/nando/master/data/nanbyo.json',
+            'https://raw.githubusercontent.com/aidrd/nando/master/data/nanbyo_class.json',
+            'https://raw.githubusercontent.com/aidrd/nando/master/data/shoman.json',
+            'https://raw.githubusercontent.com/aidrd/nando/master/data/shoman_class.json',
+        ]
+        for url in url_list:
+            fname = url.split('/')[-1]
+            fp = self._download_dir / fname
+
+            print('downloading {}'.format(fname))
+            res = requests.get(url)
+            with fp.open(mode='wb') as f:
+                f.write(res.content)
