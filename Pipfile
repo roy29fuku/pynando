@@ -11,6 +11,7 @@ gitpython = "*"
 twine = "*"
 setuptools = "*"
 wheel = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"

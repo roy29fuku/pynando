@@ -2,13 +2,14 @@ from collections import OrderedDict
 import json
 from pathlib import Path
 
-from pynando.data import find
-
+from .data import find
+from .downloader import Downloader
 
 class NandoNode(object):
     def __init__(
             self, _id, name_ja, synonyms_ja, name_en, synonyms_en,
             is_defined_by, see_also, is_parent, class_id, notification_no,
+            description, obsolete,
             _parents_ids=None, _children_ids=None,
             mondo_nodes=None, mondo_node_candidates=None
     ):
@@ -22,6 +23,8 @@ class NandoNode(object):
         self.is_parent = is_parent
         self.class_id = class_id
         self.notification_no = notification_no
+        self.description = description
+        self.obsolete = obsolete
 
         if _parents_ids is None:
             self._parents_ids = []
@@ -79,7 +82,7 @@ class NandoNode(object):
 
 
 class Nando(object):
-    def __init__(self, resource_name: str):
+    def __init__(self, resource: str):
         self.root = NandoNode(
             _id='0',
             name_ja='root',
@@ -91,9 +94,14 @@ class Nando(object):
             is_parent=True,
             class_id=None,
             notification_no=None,
+            description=None,
+            obsolete=None,
         )
         self.nando_node_dict = {'0': self.root}
-        self.fp = find(resource_name)
+        self.fp = find(resource)
+        if not self.fp.exists():
+            downloader = Downloader()
+            downloader.download(resource)
         self.read(self.fp)
 
     def __len__(self):
@@ -131,6 +139,8 @@ class Nando(object):
                     is_parent=is_parent,
                     class_id=nando_data['class_id'],
                     notification_no=nando_data['notification_no'],
+                    description=nando_data['description'],
+                    obsolete=nando_data['obsolete'],
                     _parents_ids=_parents_ids,
                     _children_ids=nando_data.get('children', []),
                 )

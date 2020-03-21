@@ -8,7 +8,7 @@ with open("requirements.txt") as f:
 
 setuptools.setup(
     name='pynando',
-    version='0.0.5',
+    version='0.0.8',
     author='Ryota Yamada',
     author_email='roy29fuku@gmail.com',
     description='wrapper for Nando (Nanbyo data ontology)',
