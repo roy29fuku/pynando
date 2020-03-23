@@ -2,8 +2,9 @@ from collections import OrderedDict
 import json
 from pathlib import Path
 
-from .data import find
+from .data import find, default_data_dir
 from .downloader import Downloader
+
 
 class NandoNode(object):
     def __init__(
@@ -82,7 +83,7 @@ class NandoNode(object):
 
 
 class Nando(object):
-    def __init__(self, resource: str):
+    def __init__(self, resource: str, data_dir: Path=default_data_dir):
         self.root = NandoNode(
             _id='0',
             name_ja='root',
@@ -98,9 +99,9 @@ class Nando(object):
             obsolete=None,
         )
         self.nando_node_dict = {'0': self.root}
-        self.fp = find(resource)
+        self.fp = find(resource, data_dir)
         if not self.fp.exists():
-            downloader = Downloader()
+            downloader = Downloader(data_dir)
             downloader.download(resource)
         self.read(self.fp)
 
