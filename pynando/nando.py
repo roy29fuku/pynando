@@ -83,7 +83,8 @@ class NandoNode(object):
 
 
 class Nando(object):
-    def __init__(self, resource: str, data_dir: Path=default_data_dir):
+    def __init__(self, resource: str, data_dir: Path=default_data_dir, fname: Path=None):
+        """use data_dir and fname if you want to load a file which is added information about mondo_nodes"""
         self.root = NandoNode(
             _id='0',
             name_ja='root',
@@ -99,7 +100,13 @@ class Nando(object):
             obsolete=None,
         )
         self.nando_node_dict = {'0': self.root}
-        self.fp = find(resource, data_dir)
+        # オリジナルファイルを読み込む
+        if fname is None:
+            self.fp = find(resource, data_dir)
+        # 独自に編集済みファイルを読むこむ
+        else:
+            self.fp = data_dir / fname
+
         if not self.fp.exists():
             downloader = Downloader(data_dir)
             downloader.download(resource)
