@@ -144,6 +144,7 @@ class Nando(object):
                     obsolete=nando_data['obsolete'],
                     _parents_ids=_parents_ids,
                     _children_ids=nando_data.get('children', []),
+                    mondo_nodes=nando_data.get('mondo_nodes', []),
                 )
                 self.nando_node_dict[_id] = nando_node
 
